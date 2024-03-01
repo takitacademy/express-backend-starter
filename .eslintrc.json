@@ -1,0 +1,53 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
+  "env": {
+    "es2021": true,
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "rules": {
+    "radix": "off",
+    "import/no-extraneous-dependencies": "off",
+    "consistent-return": "off",
+    "comma-dangle": "off",
+    "spaced-comment": "error",
+    "semi": [1, "always"],
+    "@typescript-eslint/return-await": ["off"],
+    "@typescript-eslint/comma-dangle": ["off"],
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "no-console": "off",
+    "no-case-declarations": "off",
+    "no-plusplus": "off",
+    "prefer-promise-reject-errors": "off",
+    "no-restricted-syntax": "off",
+    "guard-for-in": "off",
+    "no-unused-expressions": "off",
+    "no-prototype-builtins": "off",
+    "no-param-reassign": "off",
+    "array-callback-return": "off",
+    "no-fallthrough": "off",
+    "no-return-await": "off",
+    "arrow-parens": "off",
+    "class-methods-use-this": "off",
+    "indent": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "func-names":"off",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}

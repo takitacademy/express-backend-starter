@@ -1,0 +1,72 @@
+version: '3'
+services:
+  database:
+    container_name: user-database
+    image: postgres:latest
+    tty: true
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U postgres' ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: irembo
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - /var/irembo-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: 'no'
+
+  api-server:
+    container_name: user_management
+    image: user_management
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    tty: true
+    environment:
+      NODE_ENV: production
+      DB_PRODUCTION_HOST: database
+      DB_DRIVER: postgres
+    networks:
+      - backend
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+
+  migration:
+    container_name: user_management_migrations
+    build: ./
+    image: user_management_migrations
+    tty: true
+    environment:
+      NODE_ENV: production
+      DB_PRODUCTION_HOST: database
+    command: sh -C script.sh
+    volumes:
+      - ./:/app/
+      - ./src:/app/src/
+      - ./.env:/app/.env
+      - ./script.sh:/app/script.sh
+      - ./.sequelizerc:/app/.sequelizerc
+      - ./node_modules:/app/node_modules
+    networks:
+      - backend
+    depends_on:
+      - api-server
+    restart: 'no'
+
+networks:
+  backend:
+    name: user_management
+
+volumes:
+  user-database:
+    name: user_management_db
